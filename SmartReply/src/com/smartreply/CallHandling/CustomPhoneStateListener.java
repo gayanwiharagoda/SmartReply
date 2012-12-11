@@ -12,8 +12,8 @@ public class CustomPhoneStateListener extends PhoneStateListener {
 
 	Context context;
 	String callState;
-	private static boolean wasRiging;
 	private static int previousNoOfMissCall;
+	private static int previousCallState;
 
 	public CustomPhoneStateListener(Context context) {
 		super();
@@ -27,10 +27,9 @@ public class CustomPhoneStateListener extends PhoneStateListener {
 		switch (state) {
 		case TelephonyManager.CALL_STATE_IDLE:
 			callState = "IDEAL";
-			if (wasRiging) {
+			if (previousCallState != TelephonyManager.CALL_STATE_IDLE) {
 				sendSMSToMissNo(incomingNumber, "Test");
 			}
-			wasRiging = false;
 			break;
 		case TelephonyManager.CALL_STATE_OFFHOOK:
 			callState = "OFFHOOK";
@@ -38,12 +37,11 @@ public class CustomPhoneStateListener extends PhoneStateListener {
 		case TelephonyManager.CALL_STATE_RINGING:
 			callState = "RIGING";
 			previousNoOfMissCall = this.getMisscallCount();
-			wasRiging = true;
 			break;
 		default:
 			break;
 		}
-
+		previousCallState = state;
 		Log.i(">>>Broadcast", "onCallStateChanged " + callState);
 	}
 
@@ -60,14 +58,23 @@ public class CustomPhoneStateListener extends PhoneStateListener {
 	}
 
 	private void sendSMSToMissNo(String phoneNumber, String message) {
-		//if (this.validateMissCall(previousNoOfMissCall)) {
+		if (this.validateMissCall(previousNoOfMissCall)) {
 			SmsManager sms = SmsManager.getDefault();
 			sms.sendTextMessage(phoneNumber, null, message, null, null);
-		//}
+		}
 	}
 
 	private boolean validateMissCall(int preNoOfMissCall) {
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		int crtNoOfMissCall = this.getMisscallCount();
+		
+		Log.d("CALL", "" + "In validate"+crtNoOfMissCall);
 		if (preNoOfMissCall == crtNoOfMissCall) {
 			return false;
 		}
