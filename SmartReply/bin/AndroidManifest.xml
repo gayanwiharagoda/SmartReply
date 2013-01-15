@@ -20,7 +20,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
         <activity
-            android:name="com.smartreply.CallHandling.MainActivity"
+            android:name="com.smartreply.Activity.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,6 +29,11 @@
             </intent-filter>
         </activity>
 
+        <activity android:name="com.smartreply.Activity.EventsActivity" />
+        <activity android:name="com.smartreply.Activity.GroupsActivity" />
+        <activity android:name="com.smartreply.Activity.WelcomeActivity" />
+        
+        
         <receiver android:name="com.smartreply.CallHandling.PhoneStateBroadcastReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
