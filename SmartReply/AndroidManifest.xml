@@ -32,6 +32,7 @@
         <activity android:name="com.smartreply.Activity.EventsActivity" />
         <activity android:name="com.smartreply.Activity.GroupsActivity" />
         <activity android:name="com.smartreply.Activity.WelcomeActivity" />
+        <activity android:name="com.smartreply.Activity.TemplateActivity" />
         
         
         <receiver android:name="com.smartreply.CallHandling.PhoneStateBroadcastReceiver" >

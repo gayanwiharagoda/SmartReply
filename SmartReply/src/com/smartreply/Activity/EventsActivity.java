@@ -10,5 +10,4 @@ public class EventsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.events_layout);
     }
-
 }

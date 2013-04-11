@@ -46,7 +46,7 @@ public class MainActivity extends TabActivity {
 	        eventSpec.setContent(eventIntent);
 	   
 	        
-	     // Tab for Event
+	     // Tab for groups
 	        TabSpec groupSpec = tabHost.newTabSpec("Groups");
 	        // setting Title and Icon for the Tab
 	        //photospec.setIndicator("Photos", getResources().getDrawable(R.drawable.icon_photos_tab));
@@ -54,10 +54,20 @@ public class MainActivity extends TabActivity {
 	        Intent groupIntent = new Intent(this, GroupsActivity.class);
 	        groupSpec.setContent(groupIntent);
 	        
+	        
+	     // Tab for Template
+	        TabSpec templateSpec = tabHost.newTabSpec("Templates");
+	        // setting Title and Icon for the Tab
+	        //photospec.setIndicator("Photos", getResources().getDrawable(R.drawable.icon_photos_tab));
+	        templateSpec.setIndicator("Templates");
+	        Intent TemplateIntent = new Intent(this, TemplateActivity.class);
+	        templateSpec.setContent(TemplateIntent);
+	        
 	        // Adding all TabSpec to TabHost
 	        tabHost.addTab(welcomeSpec); 
 	        tabHost.addTab(eventSpec); 
 	        tabHost.addTab(groupSpec);
+	        tabHost.addTab(templateSpec);
 	        
 	      //set Windows tab as default (zero based)
 			tabHost.setCurrentTab(2);
