@@ -44,17 +44,17 @@ public class WelcomeActivity extends Activity {
 //		lvItem.setAdapter(itemAdapter);
 		
 		
-		spinnerItemArray = new ArrayList<String>();
-		spinnerItemArray.add("Test1");
-		spinnerItemArray.add("Test");
-		spinner = (Spinner) findViewById(R.id.spinner1);
-		// Create an ArrayAdapter using the string array and a default spinner layout
-		ArrayAdapter<String> adapter = new  ArrayAdapter<String>(this,
-		        android.R.layout.simple_spinner_item, spinnerItemArray);
-		// Specify the layout to use when the list of choices appears
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		// Apply the adapter to the spinner
-		spinner.setAdapter(adapter);
+//		spinnerItemArray = new ArrayList<String>();
+//		spinnerItemArray.add("Test1");
+//		spinnerItemArray.add("Test");
+//		spinner = (Spinner) findViewById(R.id.spinner1);
+//		// Create an ArrayAdapter using the string array and a default spinner layout
+//		ArrayAdapter<String> adapter = new  ArrayAdapter<String>(this,
+//		        android.R.layout.simple_spinner_item, spinnerItemArray);
+//		// Specify the layout to use when the list of choices appears
+//		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//		// Apply the adapter to the spinner
+//		spinner.setAdapter(adapter);
 
 		
 		itemArrey =new ArrayList<String>();
