@@ -5,11 +5,10 @@
     android:orientation="vertical" >
 
 
-    <TextView
+    <ListView
+        android:id="@+id/listView"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="15dip"
-        android:text="Template"
-        android:textSize="18dip" />
+        android:layout_height="wrap_content" >
+    </ListView>
 
 </LinearLayout>

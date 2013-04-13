@@ -28,18 +28,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name="com.smartreply.Activity.EventsActivity" />
         <activity android:name="com.smartreply.Activity.GroupsActivity" />
         <activity android:name="com.smartreply.Activity.WelcomeActivity" />
         <activity android:name="com.smartreply.Activity.TemplateActivity" />
-        
-        
+        <activity android:name="com.smartreply.Activity.TemplateViewActivity" />
+
         <receiver android:name="com.smartreply.CallHandling.PhoneStateBroadcastReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
         </receiver>
+
+        <provider
+            android:name="com.smartreply.DatabaseHandling.DataProvider"
+            android:authorities="com.smartreply.DatabaseHandling.DataProvider"
+            android:multiprocess="true"
+            android:readPermission="android.permission.permRead" >
+        </provider>
     </application>
 
 </manifest>
