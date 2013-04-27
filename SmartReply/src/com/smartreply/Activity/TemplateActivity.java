@@ -42,7 +42,7 @@ public class TemplateActivity extends Activity {
 		String[] uiBindFrom = { DatabaseCreator.COL_TEMPLATE_TITLE };
 		int[] uiBindTo = { R.id.title };
 		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
-				R.layout.template_list_item, tutorials, uiBindFrom, uiBindTo);
+				R.layout.list_item, tutorials, uiBindFrom, uiBindTo);
 		listView.setAdapter(adapter);
 
 		// listening to single list item on click
@@ -62,6 +62,8 @@ public class TemplateActivity extends Activity {
 				startActivity(i);
 			}
 		});
+		
+		
 
 	}
 }

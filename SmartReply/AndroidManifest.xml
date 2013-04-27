@@ -14,6 +14,9 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <!-- contacts -->
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:debuggable="true"
@@ -33,6 +36,7 @@
         <activity android:name="com.smartreply.Activity.WelcomeActivity" />
         <activity android:name="com.smartreply.Activity.TemplateActivity" />
         <activity android:name="com.smartreply.Activity.TemplateViewActivity" />
+        <activity android:name="com.smartreply.Activity.GroupCreatingActivity" />
 
         <receiver android:name="com.smartreply.CallHandling.PhoneStateBroadcastReceiver" >
             <intent-filter>
