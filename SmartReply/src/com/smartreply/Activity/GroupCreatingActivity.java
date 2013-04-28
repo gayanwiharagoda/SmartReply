@@ -59,14 +59,6 @@ public class GroupCreatingActivity extends Activity {
 				}
 			});
 
-			Button button = (Button) findViewById(R.id.btnSave);
-//			button.setOnClickListener(new View.OnClickListener() {
-//				public void onClick(View v) {
-//					// Perform action on click
-//					//onClick(v);
-//				}
-//			});
-
 		} catch (Exception e) {
 			Log.d("**** Exception: ", e.getMessage());
 		}
@@ -78,11 +70,10 @@ public class GroupCreatingActivity extends Activity {
 
 		try {
 			ContentResolver cr = getContentResolver();
-			cursor = cr.query(
-					ContactsContract.Contacts.CONTENT_URI, null,
-					null, null,
-					ContactsContract.Contacts.DISPLAY_NAME
-							+ " ASC");
+			cursor = cr
+					.query(ContactsContract.Contacts.CONTENT_URI, null, null,
+							null, ContactsContract.Contacts.DISPLAY_NAME
+									+ " ASC");
 
 			cursor.moveToFirst();
 			if (cursor.moveToFirst()) {
@@ -90,10 +81,10 @@ public class GroupCreatingActivity extends Activity {
 					String name = cursor
 							.getString(cursor
 									.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-//					String number = cursor
-//							.getString(cursor
-//									.getColumnIndex(ContactsContract.Contacts.NUMBER));
-					String s = name ;
+					// String number = cursor
+					// .getString(cursor
+					// .getColumnIndex(ContactsContract.Contacts.NUMBER));
+					String s = name;
 					list.add(get(s));
 					s = null;
 				} while (cursor.moveToNext());
@@ -123,8 +114,8 @@ public class GroupCreatingActivity extends Activity {
 
 			// Check the edittext is empty or not
 			if (s1.equals("")) {
-				Toast.makeText(GroupCreatingActivity.this, "Please Enter Any Text",
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(GroupCreatingActivity.this,
+						"Please Enter Any Text", Toast.LENGTH_SHORT).show();
 				return;
 			}
 
@@ -159,8 +150,8 @@ public class GroupCreatingActivity extends Activity {
 				} catch (Exception e) {
 					Log.d("########### Exception :", "" + e.getMessage());
 				}
-				Toast.makeText(GroupCreatingActivity.this, "Created Successfully",
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(GroupCreatingActivity.this,
+						"Created Successfully", Toast.LENGTH_SHORT).show();
 			}
 
 			groupCursor.close();

@@ -25,7 +25,7 @@ public class TemplateActivity extends Activity {
 		setContentView(R.layout.template_layout);
 
 		// Tute content provider
-		String[] projection = { DatabaseCreator.COL_TEMPLATE_ID,
+		String[] projection = { DatabaseCreator.COL_ID,
 				DatabaseCreator.COL_TEMPLATE_TITLE };
 
 		// Get content provider and cursor
