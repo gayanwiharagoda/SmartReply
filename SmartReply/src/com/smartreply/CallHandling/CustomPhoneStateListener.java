@@ -1,8 +1,13 @@
 package com.smartreply.CallHandling;
 
+import com.smartreply.DatabaseHandling.DataProvider;
+import com.smartreply.DatabaseHandling.DatabaseCreator;
+
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.CallLog;
+import android.provider.ContactsContract;
 import android.telephony.PhoneStateListener;
 import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
@@ -28,7 +33,9 @@ public class CustomPhoneStateListener extends PhoneStateListener {
 		case TelephonyManager.CALL_STATE_IDLE:
 			callState = "IDEAL";
 			if (previousCallState != TelephonyManager.CALL_STATE_IDLE) {
-				sendSMSToMissNo(incomingNumber, "Test");
+				String message= "TEST";
+				message = this.getMessage(incomingNumber);
+				sendSMSToMissNo(incomingNumber, message);
 			}
 			break;
 		case TelephonyManager.CALL_STATE_OFFHOOK:
@@ -71,13 +78,94 @@ public class CustomPhoneStateListener extends PhoneStateListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		int crtNoOfMissCall = this.getMisscallCount();
-		
-		Log.d("CALL", "" + "In validate"+crtNoOfMissCall);
+
+		Log.d("CALL", "" + "In validate" + crtNoOfMissCall);
 		if (preNoOfMissCall == crtNoOfMissCall) {
 			return false;
 		}
 		return true;
+	}
+
+	
+	//creating message 
+	private String getcontactId(String phoneNo) {
+		String[] projection = { ContactsContract.Contacts._ID };
+		String where = ContactsContract.CommonDataKinds.Phone.NUMBER + "="
+				+ phoneNo;
+		Cursor cursor = context.getContentResolver().query(
+				ContactsContract.Contacts.CONTENT_URI, projection, where, null,
+				null);
+		cursor.moveToFirst();
+		return (cursor.getString(cursor
+				.getColumnIndex(ContactsContract.CommonDataKinds.Phone._ID)));
+	}
+
+	private String getGroupId(String contactId) {
+		String[] projection = { ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID };
+		String where = ContactsContract.CommonDataKinds.Phone.RAW_CONTACT_ID
+				+ "=" + contactId;
+		Cursor cursor = context.getContentResolver().query(
+				ContactsContract.Data.CONTENT_URI, projection, where, null,
+				null);
+		cursor.moveToFirst();
+		return (cursor
+				.getString(cursor
+						.getColumnIndex(ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID)));
+
+	}
+
+	private String getTempalteId(String groupId) {
+
+		String[] projection = { DatabaseCreator.COL_GROUP_TEMPLATE_TEMPLATE_ID };
+		String where = DatabaseCreator.COL_GROUP_TEMPLATE_GROUP_ID + "="
+				+ groupId;
+		Cursor cursor = context.getContentResolver().query(
+				DataProvider.CONTENT_URI_TAMPLATE_GROUP, projection, where,
+				null, null);
+		cursor.moveToFirst();
+		return (cursor
+				.getString(cursor
+						.getColumnIndex(DatabaseCreator.COL_GROUP_TEMPLATE_TEMPLATE_ID)));
+	}
+
+	private String getTemplate(String templateId) {
+		String[] projection = { DatabaseCreator.COL_TEMPLATE_MESSAGE };
+		String where = DatabaseCreator.COL_ID + "=" + templateId;
+		Cursor cursor = context.getContentResolver().query(
+				DataProvider.CONTENT_URI_TEMPLATES, projection, where, null,
+				null);
+		cursor.moveToFirst();
+		return (cursor.getString(cursor
+				.getColumnIndex(DatabaseCreator.COL_TEMPLATE_MESSAGE)));
+
+	}
+
+	private String createMessege(String template) {
+		return template;
+	}
+
+	private String getMessage(String phoneNo) {
+		Log.i(">>>Broadcast", "phoneNo:" + phoneNo);
+		String contactId = this.getcontactId(phoneNo);
+		Log.i(">>>Broadcast", "ContactId:" + contactId);
+		if (contactId == null) {
+			return "knownNumberMessage";
+		} else {
+			String groupId = this.getGroupId(contactId);
+			Log.i(">>>Broadcast", "ContactId:" + contactId);
+			if (groupId == null) {
+				return "ContactNoneGourpedMessage";
+			} else {
+				String templateId = this.getTempalteId(groupId);
+				Log.i(">>>Broadcast", "templateId:" + templateId);
+				if (templateId == null) {
+					return "GroupDoNotHaveTemplate";
+				} else {
+					return this.createMessege(this.getTemplate(templateId));
+				}
+			}
+		}
 	}
 }

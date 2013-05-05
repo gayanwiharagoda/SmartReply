@@ -30,7 +30,7 @@ public class TemplateActivity extends Activity {
 
 		// Get content provider and cursor
 		ContentResolver cr = getContentResolver();
-		Cursor tutorials = cr.query(DataProvider.CONTENT_URI, projection, null,
+		Cursor tutorials = cr.query(DataProvider.CONTENT_URI_TEMPLATES, projection, null,
 				null, null);
 
 		// Let activity manage the cursor
@@ -52,13 +52,13 @@ public class TemplateActivity extends Activity {
 					int position, long id) {
 
 				// selected item
-				String product = Long.toString(id);
+				String template_id = Long.toString(id);
 
 				// Launching new Activity on selecting single List Item
 				Intent i = new Intent(getApplicationContext(),
 						TemplateViewActivity.class);
 				// sending data to new activity
-				i.putExtra("product", product);
+				i.putExtra("template_id", template_id);
 				startActivity(i);
 			}
 		});

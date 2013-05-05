@@ -25,8 +25,10 @@ public class DataProvider extends ContentProvider {
 
 	private static final String TEMPLATES_BASE_PATH = DatabaseCreator.TABLE_TEMPLATE;
 	private static final String TEMPLATES_GROUPS_BASE_PATH = DatabaseCreator.TABLE_GROUP_TEMPLATE;
-	public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY
-			+ "/" + TEMPLATES_BASE_PATH);
+	public static final Uri CONTENT_URI_TEMPLATES = Uri.parse("content://"
+			+ AUTHORITY + "/" + TEMPLATES_BASE_PATH);
+	public static final Uri CONTENT_URI_TAMPLATE_GROUP = Uri.parse("content://"
+			+ AUTHORITY + "/" + TEMPLATES_GROUPS_BASE_PATH);
 
 	public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE
 			+ "/mt-template";
@@ -108,6 +110,22 @@ public class DataProvider extends ContentProvider {
 								selectionArgs);
 			}
 			break;
+
+		case GROUP_TEMPLATE_ID:
+			String template_id = uri.getLastPathSegment();
+			if (TextUtils.isEmpty(selection)) {
+				rowsAffected = sqlDB.delete(DatabaseCreator.TABLE_GROUP_TEMPLATE,
+						DatabaseCreator.COL_GROUP_TEMPLATE_TEMPLATE_ID + "=" + template_id, null);
+			} else {
+				rowsAffected = sqlDB
+						.delete(DatabaseCreator.TABLE_GROUP_TEMPLATE,
+								selection
+										+ " and "
+										+ DatabaseCreator.COL_GROUP_TEMPLATE_TEMPLATE_ID
+										+ "=" + template_id, selectionArgs);
+			}
+			break;
+			
 		default:
 			throw new IllegalArgumentException("Unknown or Invalid URI " + uri);
 		}
@@ -131,7 +149,7 @@ public class DataProvider extends ContentProvider {
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
 		int uriType = sURIMatcher.match(uri);
-		if (uriType != TEMPLATES || uriType != GROUP_TEMPLATES) {
+		if (!(uriType == TEMPLATES || uriType == GROUP_TEMPLATES)) {
 			throw new IllegalArgumentException("Invalid URI for insert");
 		}
 
@@ -139,9 +157,11 @@ public class DataProvider extends ContentProvider {
 		long newID = 0;
 		switch (uriType) {
 		case TEMPLATES:
+			Log.d("TEST", "TEMPLATES");
 			newID = sqlDB.insert(DatabaseCreator.TABLE_TEMPLATE, null, values);
 			break;
 		case GROUP_TEMPLATES:
+			Log.d("TEST", "GROUP_TEMPLATES");
 			newID = sqlDB.insert(DatabaseCreator.TABLE_GROUP_TEMPLATE, null,
 					values);
 			break;

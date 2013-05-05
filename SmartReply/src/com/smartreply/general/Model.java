@@ -9,6 +9,11 @@ public class Model {
 		this.name = name;
 		selected = false;
 	}
+	
+	public Model(String name,boolean selected) {
+		this.name = name;
+		this.selected = selected;
+	}
 
 	public String getName() {
 		return name;

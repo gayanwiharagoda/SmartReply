@@ -14,6 +14,7 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
+        public static final int btnAddGroupToTemplate=0x7f070010;
         public static final int btnNewGroup=0x7f070005;
         public static final int btnSave=0x7f070004;
         public static final int button1=0x7f070000;
@@ -25,7 +26,7 @@ public final class R {
         public static final int listGroupsMembers=0x7f070003;
         public static final int listView=0x7f07000d;
         public static final int listView1=0x7f070001;
-        public static final int menu_settings=0x7f070010;
+        public static final int menu_settings=0x7f070011;
         public static final int title=0x7f070007;
         public static final int toggleButton1=0x7f070008;
         public static final int txtGroupName=0x7f070002;

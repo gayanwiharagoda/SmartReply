@@ -30,7 +30,15 @@
     <ListView
         android:id="@+id/listGroups"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="170dp"
+        android:layout_weight="1.25" >
     </ListView>
+
+    <Button
+        android:id="@+id/btnAddGroupToTemplate"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:onClick="onClick"
+        android:text="Button" />
 
 </LinearLayout>

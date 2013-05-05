@@ -61,6 +61,15 @@ public class GroupsActivity extends Activity {
 					Toast.makeText(getApplicationContext(),
 							"Click ListItem Number " + position,
 							Toast.LENGTH_LONG).show();
+					// selected item
+					String groupId = Long.toString(id);
+
+					// Launching new Activity on selecting single List Item
+					Intent i = new Intent(getApplicationContext(),
+							GroupCreatingActivity.class);
+					// sending data to new activity
+					i.putExtra("groupId", groupId);
+					startActivity(i);
 				}
 			});
 
