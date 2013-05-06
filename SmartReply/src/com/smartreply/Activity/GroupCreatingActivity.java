@@ -13,6 +13,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.provider.ContactsContract.PhoneLookup;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -35,6 +36,8 @@ public class GroupCreatingActivity extends Activity {
 	Cursor cursor = null;
 	Context context = null;
 	String groupId = null;
+	Uri groupUri;
+	//Uri contactUri = ContactsContract.Contacts.CONTENT_URI;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -88,25 +91,20 @@ public class GroupCreatingActivity extends Activity {
 
 		try {
 			ContentResolver cr = getContentResolver();
-			cursor = cr
-					.query(ContactsContract.Contacts.CONTENT_URI, null, null,
-							null, ContactsContract.Contacts.DISPLAY_NAME
-									+ " ASC");
+//			cursor = cr.query(contactUri, null, null, null,
+//					ContactsContract.Contacts.DISPLAY_NAME + "COLLATE LOCALIZED ASC");
+			cursor =getContacts();
 
 			Log.d("TEST_CONTACT", "" + cursor.getCount());
 			Cursor groupContactCusor = null;
 			if (this.groupId != null) {
-				// Log.d("TEST_CONTACT", "" + cursor.getCount());
-				// groupContactCusor = cr.query(Uri.withAppendedPath(
-				// ContactsContract.Data.CONTENT_URI,
-				// String.valueOf(groupId)), null, null, null, null);
+				// get contact of the current group
 				groupContactCusor = this
 						.managedQuery(
 								ContactsContract.Data.CONTENT_URI,
 								null,
 								ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID
-										+ "=?", new String[] { this.groupId },
-								null);
+										+ "=" + this.groupId, null, null);
 				Log.d("TEST_SELECT_COUNT", "" + groupContactCusor.getCount());
 
 				if (this.groupId != null) {
@@ -261,7 +259,7 @@ public class GroupCreatingActivity extends Activity {
 					String name = cursor
 							.getString(cursor
 									.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-					//check exists if not add contact
+					// check exists if not add contact
 					if (!checkContactAvalability(contact, group)) {
 						addToGroup(contact, group);
 
@@ -271,8 +269,8 @@ public class GroupCreatingActivity extends Activity {
 								Toast.LENGTH_SHORT).show();
 					} else {
 						Toast.makeText(GroupCreatingActivity.this,
-								name + " Already added",
-								Toast.LENGTH_SHORT).show();
+								name + " Already added", Toast.LENGTH_SHORT)
+								.show();
 					}
 				}
 			}
@@ -319,5 +317,18 @@ public class GroupCreatingActivity extends Activity {
 			return false;
 		}
 
+	}
+
+	private Cursor getContacts(){
+	    // Run query
+	    Uri uri = ContactsContract.Contacts.CONTENT_URI;
+	    String[] projection = new String[] {
+	    		PhoneLookup._ID, PhoneLookup.DISPLAY_NAME
+	    };
+	    //String selection = ContactsContract.Contacts.IN_VISIBLE_GROUP + " = '"(mShowInvisible ? "0" : "1") + "'";
+	    String[] selectionArgs = null;
+	    String sortOrder = PhoneLookup.DISPLAY_NAME + " COLLATE LOCALIZED ASC";
+
+	    return managedQuery(uri, projection, null, selectionArgs, sortOrder);
 	}
 }
