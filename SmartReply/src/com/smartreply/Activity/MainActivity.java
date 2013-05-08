@@ -56,13 +56,13 @@ public class MainActivity extends TabActivity {
 		welcomeSpec.setContent(welcomeIntent);
 
 		// Tab for Event
-		TabSpec eventSpec = tabHost.newTabSpec("Events");
-		// setting Title and Icon for the Tab
-		// photospec.setIndicator("Photos",
-		// getResources().getDrawable(R.drawable.icon_photos_tab));
-		eventSpec.setIndicator("Events");
-		Intent eventIntent = new Intent(this, EventsActivity.class);
-		eventSpec.setContent(eventIntent);
+//		TabSpec eventSpec = tabHost.newTabSpec("Events");
+//		// setting Title and Icon for the Tab
+//		// photospec.setIndicator("Photos",
+//		// getResources().getDrawable(R.drawable.icon_photos_tab));
+//		eventSpec.setIndicator("Events");
+//		Intent eventIntent = new Intent(this, EventsActivity.class);
+//		eventSpec.setContent(eventIntent);
 
 		// Tab for groups
 		TabSpec groupSpec = tabHost.newTabSpec("Groups");
@@ -84,12 +84,12 @@ public class MainActivity extends TabActivity {
 
 		// Adding all TabSpec to TabHost
 		tabHost.addTab(welcomeSpec);
-		tabHost.addTab(eventSpec);
+//		tabHost.addTab(eventSpec);
 		tabHost.addTab(groupSpec);
 		tabHost.addTab(templateSpec);
 
 		// set Windows tab as default (zero based)
-		tabHost.setCurrentTab(2);
+		tabHost.setCurrentTab(0);
 	}
 	
 	

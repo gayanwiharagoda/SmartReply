@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import com.smartreply.R;
 
 import android.app.Activity;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.CallLog;
+import android.provider.ContactsContract;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,13 +16,9 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 public class WelcomeActivity extends Activity {
-	private ListView lvItem;
-	private ArrayList<String> itemArrey;
+	private ListView lvCallList;
+	private ArrayList<String> CallListArrey;
 	private ArrayAdapter<String> itemAdapter;
-	
-	private Spinner spinner;
-	private ArrayList<String> spinnerItemArray;
-	
 
 	/** Called when the activity is first created. */
 	@Override
@@ -31,58 +30,32 @@ public class WelcomeActivity extends Activity {
 	}
 
 	private void setUpView() {
-		// TODO Auto-generated method stub
-//		etInput = (EditText) this.findViewById(R.id.editText_input);
-//		btnAdd = (Button) this.findViewById(R.id.button_add);
-		lvItem = (ListView) this.findViewById(R.id.listView1);
-//
-//		itemArrey = new ArrayList<String>();
-//		itemArrey.clear();
-//
-//		itemAdapter = new ArrayAdapter<String>(this,
-//				android.R.layout.simple_list_item_1, itemArrey);
-//		lvItem.setAdapter(itemAdapter);
-		
-		
-//		spinnerItemArray = new ArrayList<String>();
-//		spinnerItemArray.add("Test1");
-//		spinnerItemArray.add("Test");
-//		spinner = (Spinner) findViewById(R.id.spinner1);
-//		// Create an ArrayAdapter using the string array and a default spinner layout
-//		ArrayAdapter<String> adapter = new  ArrayAdapter<String>(this,
-//		        android.R.layout.simple_spinner_item, spinnerItemArray);
-//		// Specify the layout to use when the list of choices appears
-//		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//		// Apply the adapter to the spinner
-//		spinner.setAdapter(adapter);
+		lvCallList = (ListView) this.findViewById(R.id.listCallList);
 
-		
-		itemArrey =new ArrayList<String>();
-		itemArrey.add("Testing1");
-		itemArrey.add("Testing2");
+		CallListArrey = new ArrayList<String>();
+		CallListArrey.clear();
+
+		// get call list
+		String[] projection = { CallLog.Calls.CACHED_NAME,
+				CallLog.Calls.NUMBER, CallLog.Calls.TYPE };
+		String where = CallLog.Calls.TYPE + "=" + CallLog.Calls.MISSED_TYPE;
+
+		Cursor callListCusor = this.getContentResolver().query(
+				CallLog.Calls.CONTENT_URI, projection, where, null, null);
+		callListCusor.moveToFirst();
+		do {
+			String callerName = callListCusor.getString(callListCusor
+					.getColumnIndex(CallLog.Calls.CACHED_NAME));
+			String callerNumber = callListCusor.getString(callListCusor
+					.getColumnIndex(CallLog.Calls.NUMBER));
+			String callType = callListCusor.getString(callListCusor
+					.getColumnIndex(CallLog.Calls.TYPE));
+			CallListArrey.add(callerName + "\n" + callerNumber );
+		} while (callListCusor.moveToNext());
+
 		itemAdapter = new ArrayAdapter<String>(this,
-		android.R.layout.simple_list_item_1, itemArrey);
-		lvItem.setAdapter(itemAdapter);
-		
-//		btnAdd.setOnClickListener(new View.OnClickListener() {
-//
-//			public void onClick(View v) {
-//
-//				//addItemList();
-//			}
-//		});
-//
-//		etInput.setOnKeyListener(new View.OnKeyListener() {
-//
-//			public boolean onKey(View v, int keyCode, KeyEvent event) {
-//				// TODO Auto-generated method stub
-//
-//				if (keyCode == KeyEvent.KEYCODE_ENTER) {
-//					//addItemList();
-//				}
-//				return true;
-//			}
-//		});
+				android.R.layout.simple_list_item_1, CallListArrey);
+		lvCallList.setAdapter(itemAdapter);
 
 	}
 
