@@ -60,17 +60,11 @@ public class DatabaseCreator extends SQLiteOpenHelper {
 	 *            The open database
 	 */
 	private void seedData(SQLiteDatabase db) {
-		 db.execSQL("insert into message_template (title, message) values ('Best of Tuts+ in February 2011', 'http://mobile.tutsplus.com/articles/news/best-of-tuts-in-february-2011/');");
-		 db.execSQL("insert into message_template (title, message) values ('Design & Build a 1980s iOS Phone App: Design Comp Slicing', 'http://mobile.tutsplus.com/message_template/mobile-design-message_template/80s-phone-app-slicing/');");
-		 db.execSQL("insert into message_template (title, message) values ('Create a Brick Breaker Game with the Corona SDK: Game Controls', 'http://mobile.tutsplus.com/message_template/corona/create-a-brick-breaker-game-with-the-corona-sdk-game-controls/');");
-		 db.execSQL("insert into message_template (title, message) values ('Exporting Graphics for Mobile Apps: PNG or JPEG?', 'http://mobile.tutsplus.com/message_template/mobile-design-message_template/mobile-design_png-or-jpg/');");
-		 db.execSQL("insert into message_template (title, message) values ('Android Tablet Design', 'http://mobile.tutsplus.com/message_template/android/android-tablet-design/');");
-		 db.execSQL("insert into message_template (title, message) values ('Build a Titanium Mobile Pizza Ordering App: Order Form Setup', 'http://mobile.tutsplus.com/message_template/appcelerator/build-a-titanium-mobile-pizza-ordering-app-order-form-setup/');");
-		 db.execSQL("insert into message_template (title, message) values ('Create a Brick Breaker Game with the Corona SDK: Application Setup', 'http://mobile.tutsplus.com/message_template/corona/corona-sdk_brick-breaker/');");
-		 db.execSQL("insert into message_template (title, message) values ('Android Tablet Virtual Device Configurations', 'http://mobile.tutsplus.com/message_template/android/android-sdk_tablet_virtual-device-configuration/');");
-		 db.execSQL("insert into message_template (title, message) values ('Build a Titanium Mobile Pizza Ordering App: Topping Selection', 'http://mobile.tutsplus.com/message_template/appcelerator/pizza-ordering-app-part-2/');");
-		 db.execSQL("insert into message_template (title, message) values ('Design & Build a 1980s iOS Phone App: Interface Builder Setup', 'http://mobile.tutsplus.com/message_template/iphone/1980s-phone-app_interface-builder-setup/');");
-		
-		// db.execSQL("insert into group_message_template (template_id, group_id) values (1,4);");
+		 db.execSQL("insert into message_template (title, message) values ('Family', 'I will call you later. Now I am at a work');");
+		 db.execSQL("insert into message_template (title, message) values ('Client', 'I am buzy now. Would you mind calling me late');");
+		 db.execSQL("insert into message_template (title, message) values ('Girl', 'I will call you later sweety');");
+		 db.execSQL("insert into message_template (title, message) values ('Boss', 'I am sorry sir I cant anwer phone now. I will call you later');");
+		 db.execSQL("insert into message_template (title, message) values ('Other', 'Message');");
+		 db.execSQL("insert into message_template (title, message) values ('Other', 'Message');");
 	}
 }

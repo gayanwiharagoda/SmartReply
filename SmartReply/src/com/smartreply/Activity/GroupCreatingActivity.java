@@ -37,7 +37,8 @@ public class GroupCreatingActivity extends Activity {
 	Context context = null;
 	String groupId = null;
 	Uri groupUri;
-	//Uri contactUri = ContactsContract.Contacts.CONTENT_URI;
+
+	// Uri contactUri = ContactsContract.Contacts.CONTENT_URI;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -91,9 +92,10 @@ public class GroupCreatingActivity extends Activity {
 
 		try {
 			ContentResolver cr = getContentResolver();
-//			cursor = cr.query(contactUri, null, null, null,
-//					ContactsContract.Contacts.DISPLAY_NAME + "COLLATE LOCALIZED ASC");
-			cursor =getContacts();
+			// cursor = cr.query(contactUri, null, null, null,
+			// ContactsContract.Contacts.DISPLAY_NAME +
+			// "COLLATE LOCALIZED ASC");
+			cursor = getContacts();
 
 			Log.d("TEST_CONTACT", "" + cursor.getCount());
 			Cursor groupContactCusor = null;
@@ -241,6 +243,18 @@ public class GroupCreatingActivity extends Activity {
 
 			Log.d(" **** Group ID is: ", "** " + this.groupId);
 
+			//remove all contact for this group
+			this.getContentResolver()
+					.delete(ContactsContract.Data.CONTENT_URI,
+							ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID
+									+ "=? AND "
+									+ ContactsContract.CommonDataKinds.GroupMembership.MIMETYPE
+									+ "=?",
+							new String[] {
+									this.groupId,
+									ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE });
+
+			
 			for (int i = 0; i < InteractiveArrayAdapter.list.size(); i++) {
 				if (InteractiveArrayAdapter.list.get(i).isSelected()) {
 					cursor.moveToPosition(i);
@@ -260,18 +274,18 @@ public class GroupCreatingActivity extends Activity {
 							.getString(cursor
 									.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
 					// check exists if not add contact
-					if (!checkContactAvalability(contact, group)) {
-						addToGroup(contact, group);
+					// if (!checkContactAvalability(contact, group)) {
+					addToGroup(contact, group);
 
-						Log.d(" **** Contact Added: ", "* :" + name);
-						Toast.makeText(GroupCreatingActivity.this,
-								name + " Added Successfully",
-								Toast.LENGTH_SHORT).show();
-					} else {
-						Toast.makeText(GroupCreatingActivity.this,
-								name + " Already added", Toast.LENGTH_SHORT)
-								.show();
-					}
+					Log.d(" **** Contact Added: ", "* :" + name);
+					Toast.makeText(GroupCreatingActivity.this,
+							name + " Added Successfully", Toast.LENGTH_SHORT)
+							.show();
+					// } else {
+					// Toast.makeText(GroupCreatingActivity.this,
+					// name + " Already added", Toast.LENGTH_SHORT)
+					// .show();
+					// }
 				}
 			}
 
@@ -319,16 +333,16 @@ public class GroupCreatingActivity extends Activity {
 
 	}
 
-	private Cursor getContacts(){
-	    // Run query
-	    Uri uri = ContactsContract.Contacts.CONTENT_URI;
-	    String[] projection = new String[] {
-	    		PhoneLookup._ID, PhoneLookup.DISPLAY_NAME
-	    };
-	    //String selection = ContactsContract.Contacts.IN_VISIBLE_GROUP + " = '"(mShowInvisible ? "0" : "1") + "'";
-	    String[] selectionArgs = null;
-	    String sortOrder = PhoneLookup.DISPLAY_NAME + " COLLATE LOCALIZED ASC";
+	private Cursor getContacts() {
+		// Run query
+		Uri uri = ContactsContract.Contacts.CONTENT_URI;
+		String[] projection = new String[] { PhoneLookup._ID,
+				PhoneLookup.DISPLAY_NAME };
+		// String selection = ContactsContract.Contacts.IN_VISIBLE_GROUP +
+		// " = '"(mShowInvisible ? "0" : "1") + "'";
+		String[] selectionArgs = null;
+		String sortOrder = PhoneLookup.DISPLAY_NAME + " COLLATE LOCALIZED ASC";
 
-	    return managedQuery(uri, projection, null, selectionArgs, sortOrder);
+		return managedQuery(uri, projection, null, selectionArgs, sortOrder);
 	}
 }

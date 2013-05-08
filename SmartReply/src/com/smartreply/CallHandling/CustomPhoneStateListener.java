@@ -1,5 +1,6 @@
 package com.smartreply.CallHandling;
 
+import com.smartreply.Activity.MainActivity;
 import com.smartreply.DatabaseHandling.DataProvider;
 import com.smartreply.DatabaseHandling.DatabaseCreator;
 
@@ -9,7 +10,9 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.CallLog;
 import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.ContactsContract.CommonDataKinds.GroupMembership;
+import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Data;
 import android.telephony.PhoneStateListener;
 import android.telephony.SmsManager;
@@ -36,10 +39,12 @@ public class CustomPhoneStateListener extends PhoneStateListener {
 		switch (state) {
 		case TelephonyManager.CALL_STATE_IDLE:
 			callState = "IDEAL";
-			if (previousCallState != TelephonyManager.CALL_STATE_IDLE) {
-				String message = "TEST";
-				message = this.getMessage(incomingNumber);
-				sendSMSToMissNo(incomingNumber, message);
+			if (previousCallState == TelephonyManager.CALL_STATE_RINGING) {
+				if (MainActivity.isOn) {
+					String message = "TEST";
+					message = this.getMessage(incomingNumber);
+					sendSMSToMissNo(incomingNumber, message);
+				}
 			}
 			break;
 		case TelephonyManager.CALL_STATE_OFFHOOK:
@@ -69,10 +74,10 @@ public class CustomPhoneStateListener extends PhoneStateListener {
 	}
 
 	private void sendSMSToMissNo(String phoneNumber, String message) {
-		if (this.validateMissCall(previousNoOfMissCall)) {
+		//if (this.validateMissCall(previousNoOfMissCall)) {
 			SmsManager sms = SmsManager.getDefault();
 			sms.sendTextMessage(phoneNumber, null, message, null, null);
-		}
+		//}
 	}
 
 	private boolean validateMissCall(int preNoOfMissCall) {
@@ -95,11 +100,18 @@ public class CustomPhoneStateListener extends PhoneStateListener {
 	// creating message
 	private String getcontactId(String phoneNo) {
 		String[] projection = { ContactsContract.CommonDataKinds.Phone.CONTACT_ID, };
-		String where = ContactsContract.CommonDataKinds.Phone.NUMBER + "=?";
+		String where = ContactsContract.CommonDataKinds.Phone.NUMBER
+				+ " in (?,?,?)";
+		String phoneNoUsStanded = phoneNo.substring(0, 3) + "-"
+				+ phoneNo.substring(3, 6) + "-"
+				+ phoneNo.substring(6, phoneNo.length());
+		String phoneNoCountryCode = phoneNo.replaceFirst("0", "+94");
 
 		Cursor cursor = context.getContentResolver().query(
 				ContactsContract.CommonDataKinds.Phone.CONTENT_URI, projection,
-				where, new String[] { phoneNo }, null);
+				where,
+				new String[] { phoneNo, phoneNoUsStanded, phoneNoCountryCode },
+				null);
 		Log.d("ConcactId", "" + cursor.getCount());
 		cursor.moveToFirst();
 		if (cursor.getCount() > 0) {
@@ -108,64 +120,33 @@ public class CustomPhoneStateListener extends PhoneStateListener {
 							.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID)));
 		}
 
-		phoneNo = phoneNo.substring(0, 3) + "-" + phoneNo.substring(3, 6) + "-"
-				+ phoneNo.substring(6, phoneNo.length());
-
-		cursor = context.getContentResolver().query(
-				ContactsContract.CommonDataKinds.Phone.CONTENT_URI, projection,
-				where, new String[] { phoneNo }, null);
-		Log.d("ConcactId", "" + cursor.getCount());
-		cursor.moveToFirst();
-		if (cursor.getCount() > 0) {
-			return (cursor
-					.getString(cursor
-							.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID)));
-		}
-
-		Log.d("getGroupId", "" + phoneNo);
 		return null;
 	}
 
 	private String getGroupId(String contactId) {
-		// String[] projection = {
-		// ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID };
-		// String where = ContactsContract.CommonDataKinds.Phone.RAW_CONTACT_ID
-		// + "="+contactId;
-		// Cursor cursor = context.getContentResolver().query(
-		// ContactsContract.Data.CONTENT_URI, projection, where,
-		// null, null);
-		// Log.d("numberOfGroups", "" + cursor.getCount());
-		// if (cursor.getCount() > 0) {
-		// cursor.moveToFirst();
-		// return (cursor
-		// .getString(cursor
-		// .getColumnIndex(ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID)));
-		// }
 
-		Uri uri = Data.CONTENT_URI;
-		String where = String.format("%s = ? AND %s = ?", Data.MIMETYPE,
-				GroupMembership.CONTACT_ID);
+		Cursor cursor = context
+				.getContentResolver()
+				.query(ContactsContract.Data.CONTENT_URI,
+						new String[] {
+								ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID,
+								ContactsContract.CommonDataKinds.GroupMembership.RAW_CONTACT_ID },
+						ContactsContract.Data.MIMETYPE + "=? AND "
+								+ ContactsContract.Data.RAW_CONTACT_ID + "=?",
+						new String[] {
+								ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE,
+								contactId }, null);
 
-		String[] whereParams = new String[] {
-				GroupMembership.CONTENT_ITEM_TYPE, contactId };
-
-		String[] selectColumns = new String[] { GroupMembership.GROUP_ROW_ID, };
-
-		Cursor groupIdCursor = context.getContentResolver().query(uri,
-				selectColumns, where, whereParams, null);
-
-		Log.d("numberOfGroups", "" + groupIdCursor.getCount());
-		try {
-			if (groupIdCursor.moveToFirst()) {
-				return (groupIdCursor
-						.getString(groupIdCursor
-								.getColumnIndex(ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID)));
-			}
-			// return null; // Has no group ...
-		} finally {
-			groupIdCursor.close();
+		Log.d("numberOfGroups", "" + cursor.getCount());
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			return (cursor
+					.getString(cursor
+							.getColumnIndex(ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID)));
 		}
+
 		return null;
+
 	}
 
 	private String getTempalteId(String groupId) {
@@ -173,8 +154,9 @@ public class CustomPhoneStateListener extends PhoneStateListener {
 		String[] projection = { DatabaseCreator.COL_GROUP_TEMPLATE_TEMPLATE_ID };
 		String where = DatabaseCreator.COL_GROUP_TEMPLATE_GROUP_ID + "=?";
 		Cursor cursor = context.getContentResolver().query(
-				Uri.withAppendedPath(DataProvider.CONTENT_URI_TAMPLATE_GROUP,
-						String.valueOf(groupId)), projection, null, null, null);
+				DataProvider.CONTENT_URI_TAMPLATE_GROUP, projection, where,
+				new String[] { groupId }, null);
+		Log.d("numberOfTemplates", "" + cursor.getCount());
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			return (cursor

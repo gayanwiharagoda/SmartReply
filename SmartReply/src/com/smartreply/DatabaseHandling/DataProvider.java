@@ -64,7 +64,7 @@ public class DataProvider extends ContentProvider {
 					+ uri.getLastPathSegment());
 			Log.d("QUERY:", "TEMPLATE_ID");
 		case TEMPLATES:
-			// no filter
+			//no filter
 			queryBuilder.setTables(DatabaseCreator.TABLE_TEMPLATE);
 			Log.d("QUERY:", "TEMPLATES");
 			break;
