@@ -35,16 +35,17 @@ public final class R {
         public static final int txtTitel=0x7f07000e;
     }
     public static final class layout {
-        public static final int events_layout=0x7f030000;
-        public static final int group_creating_layout=0x7f030001;
-        public static final int group_layout=0x7f030002;
-        public static final int list_item=0x7f030003;
-        public static final int main_layout=0x7f030004;
-        public static final int new_event_layout=0x7f030005;
-        public static final int rowbuttonlayout=0x7f030006;
-        public static final int template_layout=0x7f030007;
-        public static final int template_view_layout=0x7f030008;
-        public static final int welcome_layout=0x7f030009;
+        public static final int custom_simple_layout_1=0x7f030000;
+        public static final int events_layout=0x7f030001;
+        public static final int group_creating_layout=0x7f030002;
+        public static final int group_layout=0x7f030003;
+        public static final int list_item=0x7f030004;
+        public static final int main_layout=0x7f030005;
+        public static final int new_event_layout=0x7f030006;
+        public static final int rowbuttonlayout=0x7f030007;
+        public static final int template_layout=0x7f030008;
+        public static final int template_view_layout=0x7f030009;
+        public static final int welcome_layout=0x7f03000a;
     }
     public static final class menu {
         public static final int activity_main=0x7f060000;

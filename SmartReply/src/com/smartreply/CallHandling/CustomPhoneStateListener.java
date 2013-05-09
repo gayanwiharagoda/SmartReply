@@ -1,5 +1,6 @@
 package com.smartreply.CallHandling;
 
+import com.smartreply.R;
 import com.smartreply.Activity.MainActivity;
 import com.smartreply.DatabaseHandling.DataProvider;
 import com.smartreply.DatabaseHandling.DatabaseCreator;
@@ -19,6 +20,7 @@ import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
 import android.text.NoCopySpan.Concrete;
 import android.util.Log;
+import android.view.ViewGroup;
 
 public class CustomPhoneStateListener extends PhoneStateListener {
 

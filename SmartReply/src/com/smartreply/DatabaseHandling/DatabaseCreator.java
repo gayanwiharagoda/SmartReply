@@ -63,8 +63,15 @@ public class DatabaseCreator extends SQLiteOpenHelper {
 		 db.execSQL("insert into message_template (title, message) values ('Family', 'I will call you later. Now I am at a work');");
 		 db.execSQL("insert into message_template (title, message) values ('Client', 'I am buzy now. Would you mind calling me late');");
 		 db.execSQL("insert into message_template (title, message) values ('Girl', 'I will call you later sweety');");
-		 db.execSQL("insert into message_template (title, message) values ('Boss', 'I am sorry sir I cant anwer phone now. I will call you later');");
+		 db.execSQL("insert into message_template (title, message) values ('Boss', 'Sorry Im not here to lend an ear because Im busy right now.ill call you as soon as possible.');");
 		 db.execSQL("insert into message_template (title, message) values ('Other', 'Message');");
 		 db.execSQL("insert into message_template (title, message) values ('Other', 'Message');");
+		 
+		 //Movini
+		 //Boss÷ Sorry Im not here to lend an ear because Im busy right now.ill call you as soon as possible.
+		 //Family ÷ So long as phones can ring and eyes can see,leave a message and ill get back to thee.im buzzzyyy....
+		 //client Hey, it/'s me Gayan.Sorry you cant get through. Leave a message and ill get back to you
+		 //Girl÷ roses are red ,violets are blue.sugar is sweet and so are you.ill call you as soon as possible my Juliet as you call your Romeo bcoz im busy right now.
+		 //Frndz÷ Hello?Hello?Hellooo? Im sorry , you are gonna have to speak up,I cant hear u.That's bcoz Im busy right now.Leave message guys.
 	}
 }

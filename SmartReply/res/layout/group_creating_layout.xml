@@ -16,20 +16,15 @@
     <ListView
         android:id="@+id/listGroupsMembers"
         android:layout_width="match_parent"
-        android:layout_height="263dp" >
+        android:layout_height="fill_parent"
+        android:layout_weight="1" >
     </ListView>
 
-    <LinearLayout
+    <Button
+        android:id="@+id/btnSave"
         android:layout_width="match_parent"
-        android:layout_height="129dp"
-        android:orientation="vertical" >
-
-        <Button
-            android:id="@+id/btnSave"
-            android:layout_width="match_parent"
-            android:layout_height="93dp"
-            android:onClick="onClick"
-            android:text="Save" />
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
+        android:text="Save" />
 
 </LinearLayout>

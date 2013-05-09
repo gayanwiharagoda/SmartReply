@@ -63,7 +63,10 @@ public class GroupCreatingActivity extends Activity {
 								.getColumnIndex(ContactsContract.Groups.TITLE));
 				editText.setText(groupTitle);
 			}
+		}else{
+			editText.setHint("Enter new group name...");
 		}
+			
 
 		try {
 			ArrayAdapter<Model> adapter = new InteractiveArrayAdapter(this,
@@ -334,13 +337,13 @@ public class GroupCreatingActivity extends Activity {
 	}
 
 	private Cursor getContacts() {
-		// Run query
 		Uri uri = ContactsContract.Contacts.CONTENT_URI;
 		String[] projection = new String[] { PhoneLookup._ID,
 				PhoneLookup.DISPLAY_NAME };
 		// String selection = ContactsContract.Contacts.IN_VISIBLE_GROUP +
 		// " = '"(mShowInvisible ? "0" : "1") + "'";
 		String[] selectionArgs = null;
+		
 		String sortOrder = PhoneLookup.DISPLAY_NAME + " COLLATE LOCALIZED ASC";
 
 		return managedQuery(uri, projection, null, selectionArgs, sortOrder);
