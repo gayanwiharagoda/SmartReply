@@ -1,32 +1,25 @@
 package com.smartreply.CallHandling;
 
-import com.smartreply.R;
 import com.smartreply.Activity.MainActivity;
 import com.smartreply.DatabaseHandling.DataProvider;
 import com.smartreply.DatabaseHandling.DatabaseCreator;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.CallLog;
 import android.provider.ContactsContract;
-import android.provider.ContactsContract.CommonDataKinds;
-import android.provider.ContactsContract.CommonDataKinds.GroupMembership;
-import android.provider.ContactsContract.Contacts;
-import android.provider.ContactsContract.Data;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.telephony.PhoneStateListener;
 import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
-import android.text.NoCopySpan.Concrete;
 import android.util.Log;
-import android.view.ViewGroup;
 
 public class CustomPhoneStateListener extends PhoneStateListener {
 
 	Context context;
 	String callState;
-	private static int previousNoOfMissCall;
+//	private static int previousNoOfMissCall;
 	private static int previousCallState;
 
 	public CustomPhoneStateListener(Context context) {
@@ -76,10 +69,10 @@ public class CustomPhoneStateListener extends PhoneStateListener {
 	}
 
 	private void sendSMSToMissNo(String phoneNumber, String message) {
-		//if (this.validateMissCall(previousNoOfMissCall)) {
-			SmsManager sms = SmsManager.getDefault();
-			sms.sendTextMessage(phoneNumber, null, message, null, null);
-		//}
+		// if (this.validateMissCall(previousNoOfMissCall)) {
+		SmsManager sms = SmsManager.getDefault();
+		sms.sendTextMessage(phoneNumber, null, message, null, null);
+		// }
 	}
 
 	private boolean validateMissCall(int preNoOfMissCall) {
@@ -100,26 +93,24 @@ public class CustomPhoneStateListener extends PhoneStateListener {
 	}
 
 	// creating message
+	/**
+	 * @param phoneNo
+	 * @return
+	 */
 	private String getcontactId(String phoneNo) {
-		String[] projection = { ContactsContract.CommonDataKinds.Phone.CONTACT_ID, };
-		String where = ContactsContract.CommonDataKinds.Phone.NUMBER
-				+ " in (?,?,?)";
-		String phoneNoUsStanded = phoneNo.substring(0, 3) + "-"
-				+ phoneNo.substring(3, 6) + "-"
-				+ phoneNo.substring(6, phoneNo.length());
-		String phoneNoCountryCode = phoneNo.replaceFirst("0", "+94");
-
+		String[] projection = { Phone.CONTACT_ID};
 		Cursor cursor = context.getContentResolver().query(
-				ContactsContract.CommonDataKinds.Phone.CONTENT_URI, projection,
-				where,
-				new String[] { phoneNo, phoneNoUsStanded, phoneNoCountryCode },
+				Uri.withAppendedPath(Phone.CONTENT_FILTER_URI,Uri.encode(phoneNo)),
+				projection,
+				null,
+				null,
 				null);
 		Log.d("ConcactId", "" + cursor.getCount());
 		cursor.moveToFirst();
 		if (cursor.getCount() > 0) {
 			return (cursor
 					.getString(cursor
-							.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID)));
+							.getColumnIndex(Phone.CONTACT_ID)));
 		}
 
 		return null;
@@ -189,7 +180,7 @@ public class CustomPhoneStateListener extends PhoneStateListener {
 		String contactId = this.getcontactId(phoneNo);
 		Log.i(">>>Broadcast", "ContactId:" + contactId);
 		if (contactId == null) {
-			return "knownNumberMessage";
+			return "UnknownNumberMessage";
 		} else {
 			String groupId = this.getGroupId(contactId);
 			Log.i(">>>Broadcast", "groupId:" + groupId);

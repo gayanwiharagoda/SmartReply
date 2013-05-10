@@ -1,6 +1,5 @@
 package com.smartreply.Activity;
 
-import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -10,7 +9,7 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.CallLog;
-import android.view.View;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -29,22 +28,26 @@ public class WelcomeActivity extends Activity {
 		setContentView(R.layout.welcome_layout);
 		setUpView();
 	}
+	
+	@Override
+	protected void onPostResume() {
+		super.onPostResume();
+		setUpView();
+	}
 
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
-		setUpView();
-		super.onResume();	
+		super.onResume();
 	}
-	
-	
+
 	@Override
 	public void onUserInteraction() {
 		// TODO Auto-generated method stub
-		setUpView();
+		//setUpView();
 		super.onUserInteraction();
 	}
-	
+
 	private void setUpView() {
 		lvCallList = (ListView) this.findViewById(R.id.listCallList);
 		setCallerList();
@@ -88,5 +91,5 @@ public class WelcomeActivity extends Activity {
 			lvCallList.setAdapter(itemAdapter);
 			itemAdapter.notifyDataSetChanged();
 		}
-	}	
+	}
 }
