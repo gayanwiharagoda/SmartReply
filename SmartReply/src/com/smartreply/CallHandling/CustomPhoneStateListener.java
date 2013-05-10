@@ -21,6 +21,9 @@ public class CustomPhoneStateListener extends PhoneStateListener {
 	String callState;
 //	private static int previousNoOfMissCall;
 	private static int previousCallState;
+	private final String unknowNumberMessage = "I am not at the phone answer to call. Can you call me later."; 
+	private final String contactNoneGourpedMessage = "I am currently unable to answer the phone."; 
+	private final String groupDoNotHaveTemplateMessage = "I will get back to you later."; 
 
 	public CustomPhoneStateListener(Context context) {
 		super();
@@ -47,7 +50,7 @@ public class CustomPhoneStateListener extends PhoneStateListener {
 			break;
 		case TelephonyManager.CALL_STATE_RINGING:
 			callState = "RIGING";
-			previousNoOfMissCall = this.getMisscallCount();
+			//previousNoOfMissCall = this.getMisscallCount();
 			break;
 		default:
 			break;
@@ -180,17 +183,17 @@ public class CustomPhoneStateListener extends PhoneStateListener {
 		String contactId = this.getcontactId(phoneNo);
 		Log.i(">>>Broadcast", "ContactId:" + contactId);
 		if (contactId == null) {
-			return "UnknownNumberMessage";
+			return this.unknowNumberMessage;
 		} else {
 			String groupId = this.getGroupId(contactId);
 			Log.i(">>>Broadcast", "groupId:" + groupId);
 			if (groupId == null) {
-				return "ContactNoneGourpedMessage";
+				return this.contactNoneGourpedMessage;
 			} else {
 				String templateId = this.getTempalteId(groupId);
 				Log.i(">>>Broadcast", "templateId:" + templateId);
 				if (templateId == null) {
-					return "GroupDoNotHaveTemplate";
+					return this.groupDoNotHaveTemplateMessage;
 				} else {
 					return this.createMessege(this.getTemplate(templateId));
 				}
