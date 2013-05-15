@@ -5,17 +5,12 @@ import java.util.List;
 import com.smartreply.R;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.media.ThumbnailUtils;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 public class InteractiveArrayAdapter extends ArrayAdapter<Model> {
@@ -27,7 +22,7 @@ private final Activity context;
 public InteractiveArrayAdapter(Activity context, List<Model> list) {
     super(context, R.layout.rowbuttonlayout, list);
     this.context = context;
-    this.list = list;
+    InteractiveArrayAdapter.list = list;
 }
 
 static class ViewHolder {

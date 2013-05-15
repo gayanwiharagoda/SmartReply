@@ -3,7 +3,6 @@ package com.smartreply.Activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.R.bool;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -12,20 +11,19 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.BaseColumns;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.PhoneLookup;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.smartreply.R;
-import com.smartreply.DatabaseHandling.DataProvider;
 import com.smartreply.general.InteractiveArrayAdapter;
 import com.smartreply.general.Model;
 
@@ -53,7 +51,7 @@ public class GroupCreatingActivity extends Activity {
 		// set title of the group
 		if (this.groupId != null) {
 			String[] GROUP_PROJECTION = new String[] {
-					ContactsContract.Groups._ID, ContactsContract.Groups.TITLE };
+					BaseColumns._ID, ContactsContract.Groups.TITLE };
 			Cursor getGroupTitle_Cursor = this.managedQuery(Uri
 					.withAppendedPath(ContactsContract.Groups.CONTENT_URI,
 							String.valueOf(groupId)), null, null, null, null);
@@ -135,7 +133,7 @@ public class GroupCreatingActivity extends Activity {
 							.getString(cursor
 									.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
 					String contactId = cursor.getString(cursor
-							.getColumnIndex(ContactsContract.Contacts._ID));
+							.getColumnIndex(BaseColumns._ID));
 					boolean seletced = false;
 					if (this.groupId != null) {
 						// tick already selected contacts
@@ -190,7 +188,7 @@ public class GroupCreatingActivity extends Activity {
 			// Check the Group is available or not
 			Cursor groupCursor = null;
 			String[] GROUP_PROJECTION = new String[] {
-					ContactsContract.Groups._ID, ContactsContract.Groups.TITLE };
+					BaseColumns._ID, ContactsContract.Groups.TITLE };
 			groupCursor = this.managedQuery(
 					ContactsContract.Groups.CONTENT_URI, GROUP_PROJECTION,
 					ContactsContract.Groups.TITLE + "=?", new String[] { s1 },
@@ -264,12 +262,12 @@ public class GroupCreatingActivity extends Activity {
 					Log.d("TEST_ADD_CONTACT",
 							""
 									+ cursor.getString(cursor
-											.getColumnIndex(ContactsContract.Contacts._ID))
+											.getColumnIndex(BaseColumns._ID))
 									+ ","
 									+ cursor.getString(cursor
 											.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
 					String contactID = cursor.getString(cursor
-							.getColumnIndex(ContactsContract.Contacts._ID));
+							.getColumnIndex(BaseColumns._ID));
 
 					long contact = Long.parseLong(contactID);
 					long group = Long.parseLong(this.groupId);
@@ -338,7 +336,7 @@ public class GroupCreatingActivity extends Activity {
 
 	private Cursor getContacts() {
 		Uri uri = ContactsContract.Contacts.CONTENT_URI;
-		String[] projection = new String[] { PhoneLookup._ID,
+		String[] projection = new String[] { BaseColumns._ID,
 				PhoneLookup.DISPLAY_NAME };
 		// String selection = ContactsContract.Contacts.IN_VISIBLE_GROUP +
 		// " = '"(mShowInvisible ? "0" : "1") + "'";

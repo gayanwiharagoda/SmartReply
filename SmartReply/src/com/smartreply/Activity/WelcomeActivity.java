@@ -9,7 +9,6 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.CallLog;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 

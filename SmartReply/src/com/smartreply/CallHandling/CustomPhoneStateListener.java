@@ -7,9 +7,10 @@ import com.smartreply.DatabaseHandling.DatabaseCreator;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.provider.BaseColumns;
 import android.provider.CallLog;
 import android.provider.ContactsContract;
-import android.provider.ContactsContract.CommonDataKinds.Phone;
+import android.provider.ContactsContract.PhoneLookup;
 import android.telephony.PhoneStateListener;
 import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
@@ -101,9 +102,9 @@ public class CustomPhoneStateListener extends PhoneStateListener {
 	 * @return
 	 */
 	private String getcontactId(String phoneNo) {
-		String[] projection = { Phone.CONTACT_ID};
+		String[] projection = { BaseColumns._ID};
 		Cursor cursor = context.getContentResolver().query(
-				Uri.withAppendedPath(Phone.CONTENT_FILTER_URI,Uri.encode(phoneNo)),
+				Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI,Uri.encode(phoneNo)),
 				projection,
 				null,
 				null,
@@ -113,7 +114,7 @@ public class CustomPhoneStateListener extends PhoneStateListener {
 		if (cursor.getCount() > 0) {
 			return (cursor
 					.getString(cursor
-							.getColumnIndex(Phone.CONTACT_ID)));
+							.getColumnIndex(BaseColumns._ID)));
 		}
 
 		return null;

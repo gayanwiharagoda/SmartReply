@@ -3,8 +3,6 @@ package com.smartreply.Activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.R.integer;
-import android.R.string;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -13,6 +11,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.BaseColumns;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
@@ -94,7 +93,7 @@ public class TemplateViewActivity extends Activity {
 	private List<Model> getModel() {
 		List<Model> list = new ArrayList<Model>();
 		String[] projection = { ContactsContract.Groups.TITLE,
-				ContactsContract.Groups._ID };
+				BaseColumns._ID };
 
 		try {
 			ContentResolver cr = getContentResolver();
@@ -124,7 +123,7 @@ public class TemplateViewActivity extends Activity {
 						do {
 							if ((cursor
 									.getString(cursor
-											.getColumnIndex(ContactsContract.Groups._ID)))
+											.getColumnIndex(BaseColumns._ID)))
 									.equals(templateGroupCursor.getString(templateGroupCursor
 											.getColumnIndex(DatabaseCreator.COL_GROUP_TEMPLATE_GROUP_ID))))
 								select = true;
@@ -254,7 +253,7 @@ public class TemplateViewActivity extends Activity {
 					cursor.moveToPosition(i);
 
 					long groupId = Long.parseLong(cursor.getString(cursor
-							.getColumnIndex(ContactsContract.Groups._ID)));
+							.getColumnIndex(BaseColumns._ID)));
 					int templateId_int = Integer.parseInt(templateId);
 
 					addToTemplateGroup(templateId_int, groupId);

@@ -75,6 +75,7 @@ public class GroupsActivity extends Activity {
 
 			Button button = (Button) findViewById(R.id.btnNewGroup);
 			button.setOnClickListener(new View.OnClickListener() {
+				@Override
 				public void onClick(View v) {
 					// Launching new Activity on selecting single List Item
 					Intent i = new Intent(getApplicationContext(),
