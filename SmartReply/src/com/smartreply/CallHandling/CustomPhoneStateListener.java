@@ -5,6 +5,7 @@ import com.smartreply.DatabaseHandling.DataProvider;
 import com.smartreply.DatabaseHandling.DatabaseCreator;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
@@ -39,8 +40,11 @@ public class CustomPhoneStateListener extends PhoneStateListener {
 		case TelephonyManager.CALL_STATE_IDLE:
 			callState = "IDEAL";
 			if (previousCallState == TelephonyManager.CALL_STATE_RINGING) {
-				if (MainActivity.isOn) {
-					String message = "TEST";
+				// Restore preferences
+				SharedPreferences settings = context.getSharedPreferences(MainActivity.SMTR_REPLY_PREFS, 0);
+				boolean isOn =settings.getBoolean("isOn", true);
+				if (isOn) {
+					String message = "I am currently unable to answer the phone.";
 					message = this.getMessage(incomingNumber);
 					sendSMSToMissNo(incomingNumber, message);
 				}
@@ -136,7 +140,7 @@ public class CustomPhoneStateListener extends PhoneStateListener {
 
 		Log.d("numberOfGroups", "" + cursor.getCount());
 		if (cursor.getCount() > 0) {
-			cursor.moveToFirst();
+			cursor.moveToLast();
 			return (cursor
 					.getString(cursor
 							.getColumnIndex(ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID)));

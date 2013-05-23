@@ -5,6 +5,7 @@ import com.smartreply.R;
 import android.os.Bundle;
 import android.app.TabActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.Menu;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -15,26 +16,36 @@ import android.widget.ToggleButton;
 public class MainActivity extends TabActivity {
 
 	ToggleButton onOfButton = null;
-	public static boolean isOn =true;
+	public static final String SMTR_REPLY_PREFS = "smrt_reply_pref";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_layout);
+
+		// Restore preferences
+		SharedPreferences settings = getSharedPreferences(SMTR_REPLY_PREFS, 0);
+		boolean isOn =settings.getBoolean("isOn", true);
+		
 		this.onOfButton = (ToggleButton) findViewById(R.id.toggleButton1);
-		this.onOfButton.setChecked(true);
-		this.onOfButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		this.onOfButton.setChecked(isOn);
+		this.onOfButton
+				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 					@Override
 					public void onCheckedChanged(CompoundButton toggleButton,
 							boolean isChecked) {
-						MainActivity.isOn = isChecked;
+						SharedPreferences settings = getSharedPreferences(
+								SMTR_REPLY_PREFS, 0);
+						SharedPreferences.Editor editor = settings.edit();
+						editor.putBoolean("isOn", isChecked);
+						editor.commit();
 					}
 				});
 
 		tabArranging();
 	}
 
-	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -56,13 +67,13 @@ public class MainActivity extends TabActivity {
 		welcomeSpec.setContent(welcomeIntent);
 
 		// Tab for Event
-//		TabSpec eventSpec = tabHost.newTabSpec("Events");
-//		// setting Title and Icon for the Tab
-//		// photospec.setIndicator("Photos",
-//		// getResources().getDrawable(R.drawable.icon_photos_tab));
-//		eventSpec.setIndicator("Events");
-//		Intent eventIntent = new Intent(this, EventsActivity.class);
-//		eventSpec.setContent(eventIntent);
+		// TabSpec eventSpec = tabHost.newTabSpec("Events");
+		// // setting Title and Icon for the Tab
+		// // photospec.setIndicator("Photos",
+		// // getResources().getDrawable(R.drawable.icon_photos_tab));
+		// eventSpec.setIndicator("Events");
+		// Intent eventIntent = new Intent(this, EventsActivity.class);
+		// eventSpec.setContent(eventIntent);
 
 		// Tab for groups
 		TabSpec groupSpec = tabHost.newTabSpec("Groups");
@@ -84,13 +95,12 @@ public class MainActivity extends TabActivity {
 
 		// Adding all TabSpec to TabHost
 		tabHost.addTab(welcomeSpec);
-//		tabHost.addTab(eventSpec);
+		// tabHost.addTab(eventSpec);
 		tabHost.addTab(groupSpec);
 		tabHost.addTab(templateSpec);
 
 		// set Windows tab as default (zero based)
 		tabHost.setCurrentTab(0);
 	}
-	
-	
+
 }
